@@ -40,17 +40,14 @@
             </div>
             <div class="mb-3">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" type="text" name="campground[description]"
-                    id="description" required><%= campground.description %></textarea>
+                <textarea class="form-control" type="text" name="campground[description]" id="description"
+                    required><%= campground.description %></textarea>
                 <div class="valid-feedback">
                     Looks good!
                 </div>
             </div>
             <div class="mb-3">
                 <button class="btn btn-info">Update Campground</button>
-            </div>
-            <div>
-                <a href="/campgrounds/<%= campground._id%>">Back to Campground</a>
             </div>
         </form>
     </div>
