@@ -14,19 +14,19 @@ db.once('open', () => {
 
 const selector = array => array[Math.floor(Math.random() * array.length)];
 
-async function seedImg() {
-    try {
-        const resp = await axios.get('https://api.unsplash.com/photos/random', {
-            params: {
-                client_id: 'JFeFiZ0rEmpsBqyZfk0PexGr13gHwC1hqgP8vyo6Wr0',
-                collections: 483251,
-            },
-        })
-        return resp.data.urls.small
-    } catch (err) {
-        console.error(err)
-    }
-}
+// async function seedImg() {
+//     try {
+//         const resp = await axios.get('https://api.unsplash.com/photos/random', {
+//             params: {
+//                 client_id: 'JFeFiZ0rEmpsBqyZfk0PexGr13gHwC1hqgP8vyo6Wr0',
+//                 collections: 483251,
+//             },
+//         })
+//         return resp.data.urls.small
+//     } catch (err) {
+//         console.error(err)
+//     }
+// }
 
 const seedDB = async () => {
     await Campground.deleteMany({});
@@ -38,8 +38,17 @@ const seedDB = async () => {
             location: `${cities[locationSeed].city}, ${cities[locationSeed].state}`,
             description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Maiores culpa iusto incidunt porro dolorem necessitatibus sit animi iste voluptatum, ea saepe deleniti numquam? Iusto ullam error sed beatae non mollitia.',
             price: priceSeed,
-            imageURL: await seedImg(),
-            author: '64d0e8fdb33619ffc7d817f9'
+            images: [
+                {
+                    url: 'https://res.cloudinary.com/da6h9zzm6/image/upload/v1691480870/YelpCamp/vn5dfxekezynqd6n6zg7.jpg',
+                    filename: 'YelpCamp/vn5dfxekezynqd6n6zg7'
+                },
+                {
+                    url: 'https://res.cloudinary.com/da6h9zzm6/image/upload/v1691480885/YelpCamp/xw8s6qvtuoowcgakmqnm.jpg',
+                    filename: 'YelpCamp/xw8s6qvtuoowcgakmqnm'
+                }
+            ],
+            author: '64d23cf120d9fb065472982d'
         });
         await camp.save();
     }
