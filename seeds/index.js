@@ -30,13 +30,20 @@ const selector = array => array[Math.floor(Math.random() * array.length)];
 
 const seedDB = async () => {
     await Campground.deleteMany({});
-    for (var i = 0; i < 20; i++) {
+    for (var i = 0; i < 300; i++) {
         const locationSeed = Math.floor(Math.random() * 1000);
         const priceSeed = Math.floor(Math.random() * 20) + 10;
         const camp = new Campground({
             title: `${selector(descriptors)} ${selector(places)}`,
             location: `${cities[locationSeed].city}, ${cities[locationSeed].state}`,
-            description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Maiores culpa iusto incidunt porro dolorem necessitatibus sit animi iste voluptatum, ea saepe deleniti numquam? Iusto ullam error sed beatae non mollitia.',
+            geometry: {
+                type: 'Point',
+                coordinates: [
+                    cities[locationSeed].longitude,
+                    cities[locationSeed].latitude
+                ]
+            },
+            description: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique adipisci id laboriosam nihil asperiores enim dignissimos odio distinctio a optio atque, est aut, maxime, placeat possimus eaque. Excepturi, deleniti velit. Magnam doloremque quasi quibusdam vitae et facilis quidem labore quisquam quo nesciunt commodi dolor dolorum inventore, blanditiis ea vel consequuntur soluta voluptatibus iste enim sint beatae aspernatur aliquid autem? Reprehenderit.',
             price: priceSeed,
             images: [
                 {
