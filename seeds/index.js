@@ -55,7 +55,7 @@ const seedDB = async () => {
                     filename: 'YelpCamp/xw8s6qvtuoowcgakmqnm'
                 }
             ],
-            author: '64d23cf120d9fb065472982d'
+            author: '64d0e8fdb33619ffc7d817f9'
         });
         await camp.save();
     }
