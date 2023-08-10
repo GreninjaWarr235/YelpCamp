@@ -15,6 +15,9 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
+const { scriptSrcUrls, styleSrcUrls, connectSrcUrls, fontSrcUrls } = require('./public/javascripts/helmet');
+const MongoStore = require('connect-mongo');
+const dbUrl = process.env.DB_URL;
 
 const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
@@ -32,33 +35,6 @@ app.use(methodOverride('_method'));
 app.use(mongoSanitize());
 app.use(helmet());
 
-const scriptSrcUrls = [
-    "https://cdn.jsdelivr.net",
-    "https://api.tiles.mapbox.com/",
-    "https://api.mapbox.com/",
-    "https://kit.fontawesome.com/",
-    "https://cdnjs.cloudflare.com/",
-    "https://cdn.jsdelivr.net",
-];
-
-const styleSrcUrls = [
-    "https://kit-free.fontawesome.com/",
-    "https://cdn.jsdelivr.net",
-    "https://api.mapbox.com/",
-    "https://api.tiles.mapbox.com/",
-    "https://fonts.googleapis.com/",
-    "https://use.fontawesome.com/",
-];
-
-const connectSrcUrls = [
-    "https://api.mapbox.com/",
-    "https://a.tiles.mapbox.com/",
-    "https://b.tiles.mapbox.com/",
-    "https://events.mapbox.com/",
-];
-
-const fontSrcUrls = [];
-
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
@@ -72,7 +48,7 @@ app.use(
                 "'self'",
                 "blob:",
                 "data:",
-                `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/`, //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
+                `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/`,
                 "https://images.unsplash.com/",
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
@@ -88,7 +64,18 @@ db.once('open', () => {
     console.log("Database connected!");
 });
 
+const store = new MongoStore({
+    mongoUrl: 'mongodb://127.0.0.1:27017/YelpCamp',
+    secret: 'thisisabettersecret',
+    touchAfter: 24 * 60 * 60
+});
+
+store.on('error', function (e) {
+    console.log('Session Store Error!', e);
+});
+
 const sessionConfig = {
+    store,
     name: 'session',
     secret: 'whycantithinkofagoodsecret',
     resave: false,

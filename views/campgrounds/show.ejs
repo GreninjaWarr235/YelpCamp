@@ -33,11 +33,19 @@
             </ul>
             <% if (currentUser && campground.author.equals(currentUser)) { %>
             <div class="card-body">
-                <a class="card-link btn btn-info" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
-                <form class="card-link d-inline" action="/campgrounds/<%= campground._id %>?_method=delete"
-                    method="post">
-                    <button class="btn btn-danger">Delete Camp</button>
-                </form>
+                <div class="row">
+                    <div class="col d-grid pe-2">
+                        <a class="card-link btn btn-info" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
+                    </div>
+                    <div class="col ps-2">
+                        <form class="card-link d-inline" action="/campgrounds/<%= campground._id %>?_method=delete"
+                            method="post">
+                            <div class="d-grid">
+                                <button class="btn btn-danger">Delete Camp</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
             <% } %>
             <div class="card-footer text-muted">
@@ -48,10 +56,10 @@
     <div class="col-6">
         <div id="map"></div>
         <% if (currentUser) { %>
-        <h4>Leave a Review</h4>
+        <h5 class="mt-3">Leave a Review</h5>
         <form action="/campgrounds/<%= campground._id %>/reviews" method="post" class="needs-validation mb-4"
             novalidate>
-            <div class="my-3">
+            <div class="my-2">
                 <fieldset class="starability-basic">
                     <input type="radio" id="first-rate1" name="review[rating]" value="1" />
                     <label for="first-rate1" title="Terrible">1 star</label>
@@ -97,6 +105,7 @@
 
 <script>
     const mapboxToken = '<%- process.env.MAPBOX_TOKEN %>';
+    // Incase the map is not visible, check the below line, it may surprise you :)
     const campground = <%- JSON.stringify(campground) %>;
 </script>
 <script src="/javascripts/showMap.js"></script>
