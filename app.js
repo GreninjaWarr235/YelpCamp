@@ -56,7 +56,7 @@ app.use(
     })
 );
 
-mongoose.connect('dbUrl');
+mongoose.connect(dbUrl);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
